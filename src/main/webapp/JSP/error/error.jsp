@@ -3,10 +3,12 @@
 <%@ page isErrorPage="true" %>
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>Error</title>
-<link rel="stylesheet" type="text/css" href="CSS/error.css">
+    <title>Error</title>
+    <link rel="stylesheet" type="text/css" href="CSS/error.css">
 </head>
+
 <body>
     <h1>¡Ups! Algo salió mal</h1>
     <p>Lo sentimos, hemos encontrado un error al procesar tu solicitud.</p>
@@ -18,4 +20,5 @@
     <p>Por favor, intenta nuevamente más tarde o contacta al administrador del sistema si el problema persiste.</p>
     <a href="<c:url value='/'/>">Volver a la página principal</a>
 </body>
+
 </html>
