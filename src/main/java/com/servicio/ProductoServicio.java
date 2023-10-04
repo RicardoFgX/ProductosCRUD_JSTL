@@ -4,14 +4,21 @@ import java.util.List;
 
 import com.modelo.Producto;
 
+// Interfaz que define métodos para el servicio de productos
 public interface ProductoServicio {
-	Boolean createProducto(Producto persona);
+    
+    // Método para crear un nuevo producto
+    Boolean createProducto(Producto producto);
 
-	Producto readProducto(int id);
+    // Método para obtener un producto por su ID
+    Producto readProducto(int id);
 
-	Boolean updateProducto(Producto persona);
+    // Método para actualizar la información de un producto
+    Boolean updateProducto(Producto producto);
 
-	Boolean deleteProducto(int id);
+    // Método para eliminar un producto por su ID
+    Boolean deleteProducto(int id);
 
-	List<Producto> getAllProducto();
+    // Método para obtener una lista de todos los productos
+    List<Producto> getAllProducto();
 }

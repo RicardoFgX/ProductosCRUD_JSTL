@@ -17,43 +17,47 @@ import com.servicio.ProductoServicioImpl;
 /**
  * Servlet implementation class CrearProducto
  */
+@WebServlet("/CrearProducto") // Anotación que define la URL del servlet
 public class CrearProducto extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-	ProductoServicio productoServicio = ProductoServicioImpl.obtenerInstancia();
+    private static final long serialVersionUID = 1L;
+    ProductoServicio productoServicio = ProductoServicioImpl.obtenerInstancia();
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public CrearProducto() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public CrearProducto() {
+        super();
+        // Constructor por defecto
+    }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.sendRedirect("JSP/crearProducto.jsp");
-	}
+    /**
+     * Método GET: muestra un formulario para crear un nuevo producto
+     */
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.sendRedirect("JSP/crearProducto.jsp");
+    }
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		System.out.println("CrearProducto.doPost");
-		String nombre = request.getParameter("nombre");
-		String descripcion = request.getParameter("descripcion");
-		Double peso = Double.parseDouble(request.getParameter("peso"));
-		int stock = Integer.parseInt(request.getParameter("stock"));
+    /**
+     * Método POST: procesa la solicitud para crear un nuevo producto
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        System.out.println("CrearProducto.doPost");
 
-		Producto nuevoProducto = new Producto(nombre, descripcion, peso, stock);
-		productoServicio.createProducto(nuevoProducto);
-		response.sendRedirect("JSP/exito.jsp");
-	}
+        // Obtener los parámetros del formulario
+        String nombre = request.getParameter("nombre");
+        String descripcion = request.getParameter("descripcion");
+        Double peso = Double.parseDouble(request.getParameter("peso"));
+        int stock = Integer.parseInt(request.getParameter("stock"));
 
+        // Crear un nuevo objeto Producto con los datos proporcionados
+        Producto nuevoProducto = new Producto(nombre, descripcion, peso, stock);
+
+        // Llamar al servicio para crear el producto en la base de datos
+        productoServicio.createProducto(nuevoProducto);
+
+        // Redirigir a la página de exito
+        response.sendRedirect("JSP/exito.jsp");
+    }
 }

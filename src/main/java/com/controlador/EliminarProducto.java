@@ -17,47 +17,48 @@ import com.servicio.ProductoServicioImpl;
 /**
  * Servlet implementation class EliminarProducto
  */
+@WebServlet("/EliminarProducto") // Anotación que define la URL del servlet
 public class EliminarProducto extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-	private ProductoServicio productoServicio = ProductoServicioImpl.obtenerInstancia();
+    private static final long serialVersionUID = 1L;
+    private ProductoServicio productoServicio = ProductoServicioImpl.obtenerInstancia();
 
     /**
      * @see HttpServlet#HttpServlet()
      */
     public EliminarProducto() {
         super();
-        // TODO Auto-generated constructor stub
+        // Constructor por defecto
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+    /**
+     * Método GET: no se utiliza en este servlet
+     */
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.getWriter().append("Served at: ").append(request.getContextPath());
     }
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    /**
+     * Método POST: procesa la solicitud para eliminar un producto
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-		String id = request.getParameter("id");
-		
-		
-		System.out.println("EliminarProducto.doPost id: "+id);
+        String id = request.getParameter("id");
 
-		try {
+        System.out.println("EliminarProducto.doPost id: " + id);
 
-			if (productoServicio.deleteProducto(Integer.parseInt(id))) {
-				response.sendRedirect("JSP/exito.jsp"); 
-			} else {
-				response.sendRedirect("JSP/error.jsp"); 
-			}
+        try {
+            // Intenta eliminar el producto por su ID
+            if (productoServicio.deleteProducto(Integer.parseInt(id))) {
+                response.sendRedirect("JSP/exito.jsp"); // Redirige a la página de éxito si se eliminó correctamente
+            } else {
+                response.sendRedirect("JSP/error.jsp"); // Redirige a la página de error si no se pudo eliminar
+            }
 
-		} catch (Exception e) {
-			System.out.println(e.toString());
-			response.sendRedirect("JSP/error.jsp");
-		}
-	}
-
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            response.sendRedirect("JSP/error.jsp"); // Redirige a la página de error en caso de excepción
+        }
+    }
 }

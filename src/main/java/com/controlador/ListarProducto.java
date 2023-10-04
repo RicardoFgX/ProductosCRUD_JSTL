@@ -18,53 +18,66 @@ import com.servicio.ProductoServicioImpl;
 /**
  * Servlet implementation class ListarProducto
  */
+@WebServlet("/ListarProducto") // Anotación que define la URL del servlet
 public class ListarProducto extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	ProductoServicio servicio = ProductoServicioImpl.obtenerInstancia();
+    ProductoServicio servicio = ProductoServicioImpl.obtenerInstancia();
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public ListarProducto() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public ListarProducto() {
+        super();
+        // Constructor por defecto
+    }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		System.out.println("ListarProducto.doGET");
+    /**
+     * Método GET: muestra la lista de productos
+     */
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        System.out.println("ListarProducto.doGET");
 
-		List<Producto> producto = servicio.getAllProducto();
-		request.setAttribute("PRODUCTOS", producto);
+        // Obtener la lista de todos los productos
+        List<Producto> productos = servicio.getAllProducto();
 
-		RequestDispatcher dispatcher = request.getRequestDispatcher("JSP/listaProductos.jsp");
-		dispatcher.forward(request, response);
-	}
+        // Agregar la lista de productos al request para mostrarla en la vista
+        request.setAttribute("PRODUCTOS", productos);
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-System.out.println("ListarProducto.doPost");
-		
-		
-		boolean filtrarMenores = "true".equals(request.getParameter("filter"));
-		
-		List<Producto> producto = servicio.getAllProducto();
-		
-		
-		
-		request.setAttribute("PRODUCTOS", producto);
-		RequestDispatcher dispacher = request.getRequestDispatcher("JSP/listaProductos.jsp");
-		dispacher.forward(request, response);
-	}
+        // Redirigir a la página JSP que muestra la lista de productos
+        RequestDispatcher dispatcher = request.getRequestDispatcher("JSP/listaProductos.jsp");
+        dispatcher.forward(request, response);
+    }
 
+    /**
+     * Método POST: procesa la solicitud para filtrar la lista de productos
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        System.out.println("ListarProducto.doPost");
+
+        // Verificar si se debe filtrar la lista de productos
+        boolean filtrarMenores = "true".equals(request.getParameter("filter"));
+
+        // Obtener la lista de todos los productos
+        List<Producto> productos = servicio.getAllProducto();
+
+        // Filtrar la lista de productos si es necesario
+        if (filtrarMenores) {
+            Calendar cal = Calendar.getInstance();
+            int year = cal.get(Calendar.YEAR);
+
+            productos = productos.stream()
+                    .filter(p -> p.getPeso() < 18.0) // Filtrar productos con peso menor a 18.0
+                    .collect(Collectors.toList());
+        }
+
+        // Agregar la lista de productos al request para mostrarla en la vista
+        request.setAttribute("PRODUCTOS", productos);
+
+        // Redirigir a la página JSP que muestra la lista de productos
+        RequestDispatcher dispatcher = request.getRequestDispatcher("JSP/listaProductos.jsp");
+        dispatcher.forward(request, response);
+    }
 }
